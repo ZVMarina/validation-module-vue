@@ -1,16 +1,11 @@
 <template>
-  <div class="input-container">
-    <input
-      class="input"
-      :class="{ validate: validate, error: error }"
-      :type="typeInput"
-      v-model.trim="value"
-      @input="inpuValidatetHandler"
-    />
-    <span class="input__error">
-      {{ textError }}
-    </span>
-  </div>
+  <input
+    class="input"
+    :class="{ validate: validate, error: error }"
+    :type="typeInput"
+    v-model.trim="value"
+    @input="inpuValidatetHandler"
+  />
 </template>
 
 <script>
@@ -19,14 +14,12 @@ export default {
     return {
       value: "",
       validate: false,
-      error: false,
-      textError: "",
     };
   },
   props: {
     typeInput: {
       type: String,
-      default: "tel",
+      default: "text",
       validator(type) {
         return ["text", "tel", "email", "url"].indexOf(type) !== -1;
       },
@@ -57,19 +50,15 @@ export default {
     inpuValidatetHandler() {
       switch (this.typeInput) {
         case "text":
-          console.log(this.typeInput);
           this.validateInput(this.isNotWhitespace);
           break;
         case "tel":
-          console.log(this.typeInput);
           this.validateInput(this.isValidateTel);
           break;
         case "email":
-          console.log(this.typeInput);
           this.validateInput(this.isValidateEmail);
           break;
         case "url":
-          console.log(this.typeInput);
           this.validateInput(this.isValidateUrl);
           break;
       }

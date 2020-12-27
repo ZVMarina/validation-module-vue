@@ -2,13 +2,13 @@
   "private": false,
   "name": "input-vaildation",
   "version": "0.0.1",
-  "description": "Валидация для полей ввода телефона, email, ссылки",
+  "description": "Валидация для полей ввода текста, телефона, email, ссылки",
   "main": "./dist/index.js",
   "scripts": {
     "dev": "vue serve InputValidation.vue",
     "build": "bili --name index --plugin vue --vue.css false"
   },
-  "author": "Marina Zv",
+  "author": "Marina Zvyagintseva",
   "license": "ISC",
   "files": [
     "dist/*"
