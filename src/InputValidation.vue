@@ -26,7 +26,7 @@ export default {
   props: {
     typeInput: {
       type: String,
-      default: "email",
+      default: "tel",
       validator(type) {
         return ["text", "tel", "email", "url"].indexOf(type) !== -1;
       },
@@ -34,8 +34,8 @@ export default {
   },
 
   methods: {
-    isWhitespace(str) {
-      return /^\s*$/.test(str);
+    isNotWhitespace(str) {
+      return !/^\s*$/.test(str);
     },
 
     isValidateTel(tel) {
@@ -48,41 +48,36 @@ export default {
       return /^\w+(-\w+)?@\w+(\.\w+)?(-\w+)?\.[a-z]{2,}$/.test(email);
     },
 
+    isValidateUrl(url) {
+      return /^http[s]?:\/\/(w{3}\.)?((\w+(-\w+)*\.[a-z]{2,})|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:\d{2,5})?\/?([a-z]+\/?)*#?$/.test(
+        url
+      );
+    },
+
     inpuValidatetHandler() {
       switch (this.typeInput) {
         case "text":
           console.log(this.typeInput);
-          this.validateText();
+          this.validateInput(this.isNotWhitespace);
           break;
         case "tel":
           console.log(this.typeInput);
-          this.validateTel();
+          this.validateInput(this.isValidateTel);
           break;
         case "email":
           console.log(this.typeInput);
-          this.validateEmail();
+          this.validateInput(this.isValidateEmail);
+          break;
+        case "url":
+          console.log(this.typeInput);
+          this.validateInput(this.isValidateUrl);
           break;
       }
     },
 
-    validateText() {
-      if (!this.isWhitespace(this.value)) {
-        this.validate = true;
-      } else {
-        this.validate = false;
-      }
-    },
-
-    validateTel() {
-      if (this.isValidateTel(this.value)) {
-        this.validate = true;
-      } else {
-        this.validate = false;
-      }
-    },
-
-    validateEmail() {
-      if (this.isValidateEmail(this.value)) {
+    validateInput(regularFunc) {
+      this.error = false;
+      if (regularFunc(this.value)) {
         this.validate = true;
       } else {
         this.validate = false;
