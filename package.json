@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "input-vaildation",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Валидация для полей ввода текста, телефона, email, ссылки",
   "main": "./dist/index.js",
   "scripts": {
