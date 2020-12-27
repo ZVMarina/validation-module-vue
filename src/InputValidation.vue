@@ -1,7 +1,7 @@
 <template>
   <input
     class="input"
-    :class="{ validate: validate, error: error }"
+    :class="{ validate: validate }"
     :type="typeInput"
     v-model.trim="value"
     @input="inpuValidatetHandler"
