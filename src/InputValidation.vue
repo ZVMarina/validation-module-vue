@@ -1,14 +1,16 @@
 <template>
-  <form @submit.prevent="onSubmit">
+  <div class="input-container">
     <input
       class="input"
-      :class="{ ok: ok, error: error }"
+      :class="{ validate: validate, error: error }"
       :type="typeInput"
       v-model.trim="value"
       @input="inpuValidatetHandler"
     />
-    <button>Test</button>
-  </form>
+    <span class="input__error">
+      {{ textError }}
+    </span>
+  </div>
 </template>
 
 <script>
@@ -16,14 +18,15 @@ export default {
   data() {
     return {
       value: "",
-      ok: false,
+      validate: false,
       error: false,
+      textError: "",
     };
   },
   props: {
     typeInput: {
       type: String,
-      default: "text",
+      default: "email",
       validator(type) {
         return ["text", "tel", "email", "url"].indexOf(type) !== -1;
       },
@@ -31,32 +34,58 @@ export default {
   },
 
   methods: {
-    onSubmit() {
-      console.log(this.value);
-      console.log(this.typeInput);
-    },
-
     isWhitespace(str) {
       return /^\s*$/.test(str);
     },
 
+    isValidateTel(tel) {
+      return /^(\+7|8)\s?(9\d{2}|\(9\d{2}\))(\s|-)?\d{3}\s?-?\d{2}\s?-?\d{2}$/.test(
+        tel
+      );
+    },
+
+    isValidateEmail(email) {
+      return /^\w+(-\w+)?@\w+(\.\w+)?(-\w+)?\.[a-z]{2,}$/.test(email);
+    },
+
     inpuValidatetHandler() {
       switch (this.typeInput) {
-        case "text": {
+        case "text":
           console.log(this.typeInput);
           this.validateText();
           break;
-        }
+        case "tel":
+          console.log(this.typeInput);
+          this.validateTel();
+          break;
+        case "email":
+          console.log(this.typeInput);
+          this.validateEmail();
+          break;
       }
     },
 
     validateText() {
       if (!this.isWhitespace(this.value)) {
-        this.ok = true;
-        this.error = false;
+        this.validate = true;
       } else {
-        this.ok = false;
-        this.error = true;
+        this.validate = false;
+      }
+    },
+
+    validateTel() {
+      if (this.isValidateTel(this.value)) {
+        this.validate = true;
+      } else {
+        this.validate = false;
+      }
+    },
+
+    validateEmail() {
+      if (this.isValidateEmail(this.value)) {
+        this.validate = true;
+      } else {
+        this.validate = false;
       }
     },
   },
@@ -65,17 +94,29 @@ export default {
 
 
 <style>
+.input-container {
+  position: relative;
+}
+
+.input__error {
+  position: absolute;
+  transform: translateY(100%);
+  font-size: 12px;
+  bottom: -5px;
+  left: 0;
+  color: red;
+}
 
 .input:focus {
   outline: none;
 }
 
-.ok {
+.validate {
   border: 1px solid rgb(1, 214, 1);
-  background-color:rgb(212, 255, 212) ;
+  background-color: rgb(212, 255, 212);
 }
 .error {
   border: 1px solid red;
-  background-color:rgb(255, 220, 220);
+  background-color: rgb(255, 220, 220);
 }
 </style>
